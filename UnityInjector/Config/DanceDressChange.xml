@@ -1,0 +1,29 @@
+<DanceDressChange>
+    <KeyConfig maid0="Alpha1" maid1="Alpha2" maid2="Alpha3" maid3="Alpha4" />
+    <PresetList maidNo="0">
+        <File Name="公式使用プリセット01.preset" />
+        <File Name="公式使用プリセット02.preset" />
+        <File Name="公式使用プリセット03.preset" />
+        <File Name="公式使用プリセット04.preset" />
+        <File Name="公式使用プリセット05.preset" />
+        <File Name="公式使用プリセット06.preset" />
+    </PresetList>
+    <PresetList maidNo="1">
+        <File Name="公式使用プリセット07.preset" />
+        <File Name="公式使用プリセット08.preset" />
+        <File Name="公式使用プリセット09.preset" />
+        <File Name="公式使用プリセット10.preset" />
+        <File Name="公式使用プリセット11.preset" />
+        <File Name="公式使用プリセット12.preset" />
+    </PresetList>
+    <PresetList maidNo="2">
+        <File Name="公式使用プリセット13.preset" />
+        <File Name="公式使用プリセット14.preset" />
+        <File Name="公式使用プリセット15.preset" />
+        <File Name="公式使用プリセット16.preset" />
+        <File Name="公式使用プリセット17.preset" />
+        <File Name="公式使用プリセット18.preset" />
+    </PresetList>
+    <PresetList maidNo="3">
+    </PresetList>
+</DanceDressChange>
