@@ -20,6 +20,15 @@ maidNo="0"が一人目のメイドさんの分で、
 
 ダンス中にキーボードの1から4を押すとそれぞれ対応した人のプリセットが適用されるよ
 
+以下のキーを押しながら5～8を押すとpororiするよ。
+この機能を使うにはCM3D2.HalfDressing.Plugin.dll 0.0.0.81が必要だよ
+左shift wear
+左ctrl  mizugi
+左Alt   onepiece
+右shift skirt
+右ctrl  bra
+右Alt   panz
+
 
 # 注意
 ドキドキ☆Fallin' Loveなんかは、めがねとか、イヤリングがおかしなところにくっついちゃうよ

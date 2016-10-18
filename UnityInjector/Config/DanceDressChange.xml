@@ -1,5 +1,8 @@
 <DanceDressChange>
     <KeyConfig maid0="Alpha1" maid1="Alpha2" maid2="Alpha3" maid3="Alpha4" />
+    <pororiConfig maid0="Alpha5" maid1="Alpha6" maid2="Alpha7" maid3="Alpha8"
+                  wear="LeftShift" mizugi="LeftControl" onepiece="LeftAlt"
+                  skirt="RightShift" bra="RightControl" panz="RightAlt" />
     <PresetList maidNo="0">
         <File Name="公式使用プリセット01.preset" />
         <File Name="公式使用プリセット02.preset" />
