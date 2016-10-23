@@ -11,7 +11,7 @@ using UnityInjector.Attributes;
 namespace DanceDressChange.Plugin
 {
     [PluginFilter("CM3D2x64"), PluginFilter("CM3D2x86"), PluginFilter("CM3D2VRx64"), PluginFilter("CM3D2OHx64"), PluginFilter("CM3D2OHx86"), PluginFilter("CM3D2OHVRx64"),
-     PluginName("DanceDressChange"), PluginVersion("0.0.0.3")]
+     PluginName("DanceDressChange"), PluginVersion("0.0.0.31")]
 
     public class DanceDressChange : PluginBase
     {
@@ -123,8 +123,8 @@ namespace DanceDressChange.Plugin
                     // porori
                     i = 0;
                     foreach (string tagElement in tagElements){
-                        if(Input.GetKeyDown(xmlManager.GetPororiKey(maidNo)) &&
-                           Input.GetKey(xmlManager.GetTagKey(i)))
+                        if(Input.GetKey(xmlManager.GetPororiKey(maidNo)) &&
+                           Input.GetKeyDown(xmlManager.GetTagKey(i)))
                         {
                         //   https://gist.github.com/neguse11/1951c3625ee7aa153a2a ,MaidVoicePitchPlugin.csを参考にpororiを呼び出してみる実験
                             this.gameObject.SendMessage("changePropPororiSetTag",tagElement);
@@ -135,8 +135,8 @@ namespace DanceDressChange.Plugin
                         i++;
                     }
                     // mekure reset
-                    if(Input.GetKeyDown(xmlManager.GetPororiKey(maidNo)) &&
-                       Input.GetKey(xmlManager.GetResetKey()))
+                    if(Input.GetKey(xmlManager.GetPororiKey(maidNo)) &&
+                       Input.GetKeyDown(xmlManager.GetResetKey()))
                     {
                         maid = GameMain.Instance.CharacterMgr.GetMaid(maidNo);
                         if (maid != null) {
@@ -148,8 +148,8 @@ namespace DanceDressChange.Plugin
                     // mekure
                     i = 0;
                     foreach (string tagItemChange in tagItemChanges){
-                        if(Input.GetKeyDown(xmlManager.GetPororiKey(maidNo)) &&
-                           Input.GetKey(xmlManager.GetTagItemKey(i)))
+                        if(Input.GetKey(xmlManager.GetPororiKey(maidNo)) &&
+                           Input.GetKeyDown(xmlManager.GetTagItemKey(i)))
                         {
                             maid = GameMain.Instance.CharacterMgr.GetMaid(maidNo);
                             if (maid != null) {
