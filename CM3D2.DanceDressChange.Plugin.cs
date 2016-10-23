@@ -11,7 +11,7 @@ using UnityInjector.Attributes;
 namespace DanceDressChange.Plugin
 {
     [PluginFilter("CM3D2x64"), PluginFilter("CM3D2x86"), PluginFilter("CM3D2VRx64"), PluginFilter("CM3D2OHx64"), PluginFilter("CM3D2OHx86"), PluginFilter("CM3D2OHVRx64"),
-     PluginName("DanceDressChange"), PluginVersion("0.0.0.2")]
+     PluginName("DanceDressChange"), PluginVersion("0.0.0.3")]
 
     public class DanceDressChange : PluginBase
     {
@@ -56,6 +56,12 @@ namespace DanceDressChange.Plugin
             "panz"
         };
 
+        private string[] tagItemChanges =
+        {
+            "めくれスカート",
+            "めくれスカート後ろ"
+        };
+
         // presetリスト 4人分でいいか ダンス用だからね
         private const int MAX_LISTED_MAID = 4;
         private int[] presetPos = new int[MAX_LISTED_MAID];
@@ -70,7 +76,7 @@ namespace DanceDressChange.Plugin
         public void Awake()
         {
             UnityEngine.Object.DontDestroyOnLoad(this);
-            xmlManager = new XmlManager(tagElements);
+            xmlManager = new XmlManager(tagElements, tagItemChanges);
         }
 
         public void OnDestroy()
@@ -102,6 +108,8 @@ namespace DanceDressChange.Plugin
 
             if (Enum.IsDefined(typeof(TargetLevel),iSceneLevel)){
                 for(int maidNo = 0; maidNo < MAX_LISTED_MAID; maidNo++){
+                    int i = 0;
+                    // preset 変更
                     if(Input.GetKeyDown(xmlManager.GetKey(maidNo))){
                         string presetFileName = xmlManager.GetPresetFileName(maidNo,presetPos[maidNo]);
                         if(presetFileName != null){
@@ -112,9 +120,8 @@ namespace DanceDressChange.Plugin
                             }
                         }
                     }
-                }
-                for(int maidNo = 0; maidNo < MAX_LISTED_MAID; maidNo++){
-                    int i = 0;
+                    // porori
+                    i = 0;
                     foreach (string tagElement in tagElements){
                         if(Input.GetKeyDown(xmlManager.GetPororiKey(maidNo)) &&
                            Input.GetKey(xmlManager.GetTagKey(i)))
@@ -124,6 +131,32 @@ namespace DanceDressChange.Plugin
                             this.gameObject.SendMessage("changePropPororiSetMaidNo",maidNo.ToString());
                             this.gameObject.SendMessage("checkPropPororiExec");
                             this.gameObject.SendMessage("changePropPororiExec");
+                        }
+                        i++;
+                    }
+                    // mekure reset
+                    if(Input.GetKeyDown(xmlManager.GetPororiKey(maidNo)) &&
+                       Input.GetKey(xmlManager.GetResetKey()))
+                    {
+                        maid = GameMain.Instance.CharacterMgr.GetMaid(maidNo);
+                        if (maid != null) {
+                            maid.ResetProp("skirt");
+                            maid.ResetProp("onepiece");
+                            maid.AllProcPropSeqStart();
+                        }
+                    }
+                    // mekure
+                    i = 0;
+                    foreach (string tagItemChange in tagItemChanges){
+                        if(Input.GetKeyDown(xmlManager.GetPororiKey(maidNo)) &&
+                           Input.GetKey(xmlManager.GetTagItemKey(i)))
+                        {
+                            maid = GameMain.Instance.CharacterMgr.GetMaid(maidNo);
+                            if (maid != null) {
+                                maid.ItemChangeTemp("skirt", tagItemChange);
+                                maid.ItemChangeTemp("onepiece", tagItemChange);
+                                maid.AllProcPropSeqStart();
+                            }
                         }
                         i++;
                     }
@@ -141,11 +174,15 @@ namespace DanceDressChange.Plugin
             KeyCode[] keyAttr = new KeyCode[MAX_LISTED_MAID];
             KeyCode[] keyAttrPorori = new KeyCode[MAX_LISTED_MAID];
             KeyCode[] keyAttrTag = new KeyCode[10]; // tagElementsの要素数とってこれないかな
+            KeyCode[] keyAttrtagItemChange = new KeyCode[10];         // tagItemChangeの要素数とってこれないかな
+            KeyCode keyAttrMekureReset;
             string[] tagElements;
+            string[] tagItemChanges;
             
-            public XmlManager(string[] tagElements)
+            public XmlManager(string[] tagElements, string[] tagItemChanges)
             {
                 this.tagElements = tagElements;
+                this.tagItemChanges = tagItemChanges;
                 for(int i=0; i < MAX_LISTED_MAID; i++){
                     listPreset[i] = new List<string>();
                 }
@@ -158,50 +195,50 @@ namespace DanceDressChange.Plugin
                 }
             }
 
+            private KeyCode StringToKeyCode(String keyString){
+                KeyCode returnKeyCode = KeyCode.None;
+                foreach (string keyName in Enum.GetNames(typeof(KeyCode)))
+                {
+                    if (keyString.Equals(keyName))
+                    {
+                        returnKeyCode = (KeyCode)Enum.Parse(typeof(KeyCode), keyString);
+                        break;
+                    }
+                }
+                return returnKeyCode;
+            }
 
             private void InitXml()
             {
                 xmldoc.Load(xmlFileName);
+                // KeyConfig
                 XmlNode keyConfig = xmldoc.GetElementsByTagName("KeyConfig")[0];
                 for(int i = 0; i < MAX_LISTED_MAID; i++){
-                    string KeyCode = ((XmlElement)keyConfig).GetAttribute("maid"+i);
-                    foreach (string keyName in Enum.GetNames(typeof(KeyCode)))
-                    {
-                        if (KeyCode.Equals(keyName))
-                        {
-                            keyAttr[i] = (KeyCode)Enum.Parse(typeof(KeyCode), KeyCode);
-                            break;
-                        }
-                    }
+                    keyAttr[i] = StringToKeyCode(((XmlElement)keyConfig).GetAttribute("maid"+i));
                 }
+                // pororiConfig
                 keyConfig = xmldoc.GetElementsByTagName("pororiConfig")[0];
                 for(int i = 0; i < MAX_LISTED_MAID; i++){
-                    string KeyCode = ((XmlElement)keyConfig).GetAttribute("maid"+i);
-                    foreach (string keyName in Enum.GetNames(typeof(KeyCode)))
-                    {
-                        if (KeyCode.Equals(keyName))
-                        {
-                            keyAttrPorori[i] = (KeyCode)Enum.Parse(typeof(KeyCode), KeyCode);
-                            break;
-                        }
-                    }
+                    keyAttrPorori[i] = StringToKeyCode(((XmlElement)keyConfig).GetAttribute("maid"+i));
                 }
                 {
                     int i = 0;
                     foreach (string tagElement in tagElements)
                     {
-                        string KeyCode = ((XmlElement)keyConfig).GetAttribute(tagElement);
-                        foreach (string keyName in Enum.GetNames(typeof(KeyCode)))
-                        {
-                            if (KeyCode.Equals(keyName))
-                            {
-                                keyAttrTag[i] = (KeyCode)Enum.Parse(typeof(KeyCode), KeyCode);
-                                break;
-                            }
-                        }
+                        keyAttrTag[i] = StringToKeyCode(((XmlElement)keyConfig).GetAttribute(tagElement));
                         i++;
                     }
                 }
+                keyAttrMekureReset = StringToKeyCode(((XmlElement)keyConfig).GetAttribute("めくれ戻し"));
+                {
+                    int i = 0;
+                    foreach (string tagItemChange in tagItemChanges)
+                    {
+                        keyAttrtagItemChange[i] = StringToKeyCode(((XmlElement)keyConfig).GetAttribute(tagItemChange));
+                        i++;
+                    }
+                }
+                // PresetList
                 XmlNodeList presetList = xmldoc.GetElementsByTagName("PresetList");
                 foreach (XmlNode presetFile in presetList)
                 {
@@ -227,7 +264,17 @@ namespace DanceDressChange.Plugin
             {
                 return keyAttrTag[tagNo];
             }
-            
+
+            public KeyCode GetResetKey()
+            {
+                return keyAttrMekureReset;
+            }
+
+            public KeyCode GetTagItemKey(int tagItemNo)
+            {
+                return keyAttrtagItemChange[tagItemNo];
+            }
+
             public string GetPresetFileName(int no,int pos){
                 string[] presetFileNames = listPreset[no].ToArray();
                 if (presetFileNames[pos].Length == 0)
