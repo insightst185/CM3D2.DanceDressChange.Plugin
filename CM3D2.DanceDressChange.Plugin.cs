@@ -11,7 +11,7 @@ using UnityInjector.Attributes;
 namespace DanceDressChange.Plugin
 {
     [PluginFilter("CM3D2x64"), PluginFilter("CM3D2x86"), PluginFilter("CM3D2VRx64"), PluginFilter("CM3D2OHx64"), PluginFilter("CM3D2OHx86"), PluginFilter("CM3D2OHVRx64"),
-     PluginName("DanceDressChange"), PluginVersion("0.0.0.31")]
+     PluginName("DanceDressChange"), PluginVersion("0.0.0.4")]
 
     public class DanceDressChange : PluginBase
     {
@@ -115,7 +115,14 @@ namespace DanceDressChange.Plugin
                         if(presetFileName != null){
                             maid = GameMain.Instance.CharacterMgr.GetMaid(maidNo);
                             if (maid != null) {
-                                SetPreset(maid,presetFileName);
+                                String extent = Path.GetExtension(presetFileName);
+                                if(extent.Equals(".preset")){
+                                    SetPreset(maid,presetFileName);
+                                }
+                                else if(extent.Equals(".menu")){
+                                    Menu.ProcScript(maid,presetFileName,false);
+                                    maid.AllProcPropSeqStart();
+                                }
                                 presetPos[maidNo]++;
                             }
                         }
