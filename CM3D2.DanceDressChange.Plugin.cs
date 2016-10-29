@@ -11,7 +11,7 @@ using UnityInjector.Attributes;
 namespace DanceDressChange.Plugin
 {
     [PluginFilter("CM3D2x64"), PluginFilter("CM3D2x86"), PluginFilter("CM3D2VRx64"), PluginFilter("CM3D2OHx64"), PluginFilter("CM3D2OHx86"), PluginFilter("CM3D2OHVRx64"),
-     PluginName("DanceDressChange"), PluginVersion("0.0.0.4")]
+     PluginName("DanceDressChange"), PluginVersion("0.0.0.5")]
 
     public class DanceDressChange : PluginBase
     {
@@ -24,6 +24,9 @@ namespace DanceDressChange.Plugin
             //ダンス1:ドキドキ☆Fallin' Love
             SceneDance_DDFL = 4,
 
+            // エディット
+            SceneEdit = 5,
+
             // ダンス2:entrance to you
             SceneDance_ETYL = 20,
 
@@ -32,6 +35,9 @@ namespace DanceDressChange.Plugin
 
             // ダンス4:stellar my tears
             SceneDance_STMT = 26,
+
+            // 撮影モード
+            ScenePhot = 27,
 
             // ダンス5:rhythmix to you
            SceneDance_RYFU = 28,
@@ -112,6 +118,10 @@ namespace DanceDressChange.Plugin
                     // preset 変更
                     if(Input.GetKeyDown(xmlManager.GetKey(maidNo))){
                         string presetFileName = xmlManager.GetPresetFileName(maidNo,presetPos[maidNo]);
+                        if(presetFileName == null){
+                            presetPos[maidNo] = 0;
+                            presetFileName = xmlManager.GetPresetFileName(maidNo,presetPos[maidNo]);
+                        }
                         if(presetFileName != null){
                             maid = GameMain.Instance.CharacterMgr.GetMaid(maidNo);
                             if (maid != null) {
@@ -167,6 +177,11 @@ namespace DanceDressChange.Plugin
                         }
                         i++;
                     }
+                    
+                    if(Input.GetKey(xmlManager.GetInitKey())){
+                        xmlManager = new XmlManager(tagElements, tagItemChanges);
+                        Initialization();
+                    }
                 }
             }
 
@@ -183,6 +198,7 @@ namespace DanceDressChange.Plugin
             KeyCode[] keyAttrTag = new KeyCode[10]; // tagElementsの要素数とってこれないかな
             KeyCode[] keyAttrtagItemChange = new KeyCode[10];         // tagItemChangeの要素数とってこれないかな
             KeyCode keyAttrMekureReset;
+            KeyCode keyAttrInit;
             string[] tagElements;
             string[] tagItemChanges;
             
@@ -223,6 +239,7 @@ namespace DanceDressChange.Plugin
                 for(int i = 0; i < MAX_LISTED_MAID; i++){
                     keyAttr[i] = StringToKeyCode(((XmlElement)keyConfig).GetAttribute("maid"+i));
                 }
+                keyAttrInit = StringToKeyCode(((XmlElement)keyConfig).GetAttribute("init"));
                 // pororiConfig
                 keyConfig = xmldoc.GetElementsByTagName("pororiConfig")[0];
                 for(int i = 0; i < MAX_LISTED_MAID; i++){
@@ -277,6 +294,11 @@ namespace DanceDressChange.Plugin
                 return keyAttrMekureReset;
             }
 
+            public KeyCode GetInitKey()
+            {
+                return keyAttrInit;
+            }
+
             public KeyCode GetTagItemKey(int tagItemNo)
             {
                 return keyAttrtagItemChange[tagItemNo];
@@ -284,7 +306,7 @@ namespace DanceDressChange.Plugin
 
             public string GetPresetFileName(int no,int pos){
                 string[] presetFileNames = listPreset[no].ToArray();
-                if (presetFileNames[pos].Length == 0)
+                if (presetFileNames.Length <= pos)
                 {
                     return null;
                 }
