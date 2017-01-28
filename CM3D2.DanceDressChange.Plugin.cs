@@ -11,7 +11,7 @@ using UnityInjector.Attributes;
 namespace DanceDressChange.Plugin
 {
     [PluginFilter("CM3D2x64"), PluginFilter("CM3D2x86"), PluginFilter("CM3D2VRx64"), PluginFilter("CM3D2OHx64"), PluginFilter("CM3D2OHx86"), PluginFilter("CM3D2OHVRx64"),
-     PluginName("DanceDressChange"), PluginVersion("0.0.0.5")]
+     PluginName("DanceDressChange"), PluginVersion("0.0.0.6")]
 
     public class DanceDressChange : PluginBase
     {
@@ -49,7 +49,10 @@ namespace DanceDressChange.Plugin
             SceneDance_HAP2 = 31,
 
             // ダンス7:
-            SceneDance_KANO = 32
+            SceneDance_KANO = 32,
+            
+            SceneDance_SSE = 34,
+            SceneDance_SSEDX = 35
         }
 
         private string[] tagElements = 
@@ -157,8 +160,8 @@ namespace DanceDressChange.Plugin
                     {
                         maid = GameMain.Instance.CharacterMgr.GetMaid(maidNo);
                         if (maid != null) {
-                            maid.ResetProp("skirt");
-                            maid.ResetProp("onepiece");
+                            maid.ResetProp("skirt",false);
+                            maid.ResetProp("onepiece",false);
                             maid.AllProcPropSeqStart();
                         }
                     }
