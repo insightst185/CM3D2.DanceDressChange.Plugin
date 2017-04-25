@@ -11,7 +11,7 @@ using UnityInjector.Attributes;
 namespace DanceDressChange.Plugin
 {
     [PluginFilter("CM3D2x64"), PluginFilter("CM3D2x86"), PluginFilter("CM3D2VRx64"), PluginFilter("CM3D2OHx64"), PluginFilter("CM3D2OHx86"), PluginFilter("CM3D2OHVRx64"),
-     PluginName("DanceDressChange"), PluginVersion("0.0.0.6")]
+     PluginName("DanceDressChange"), PluginVersion("0.0.0.7")]
 
     public class DanceDressChange : PluginBase
     {
@@ -52,7 +52,8 @@ namespace DanceDressChange.Plugin
             SceneDance_KANO = 32,
             
             SceneDance_SSE = 34,
-            SceneDance_SSEDX = 35
+            SceneDance_SSEDX = 35,
+            SceneDance_KHG = 36
         }
 
         private string[] tagElements = 
@@ -133,8 +134,9 @@ namespace DanceDressChange.Plugin
                                     SetPreset(maid,presetFileName);
                                 }
                                 else if(extent.Equals(".menu")){
-                                    Menu.ProcScript(maid,presetFileName,false);
-                                    maid.AllProcPropSeqStart();
+                                    maid.SetUpModel(presetFileName);
+//                                    Menu.ProcScript(maid,presetFileName,false);
+//                                    maid.AllProcPropSeqStart();
                                 }
                                 presetPos[maidNo]++;
                             }

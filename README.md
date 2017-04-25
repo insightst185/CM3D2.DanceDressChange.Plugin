@@ -18,6 +18,12 @@ DanceDressChange.xml に適用したいプリセット,またはmenuのファイ
 maidNo="0"が一人目のメイドさんの分で、  
 適用させたい順番にFile Nameを書いていってね  
 
+例：
+    <PresetList maidNo="0">
+        <File Name="hoge.preset" />
+        <File Name="huga.menu" />
+    </PresetList>
+
 ダンス中にキーボードの1から4を押すとそれぞれ対応した人のプリセット,またはmenuが適用されるよ  
 
 5～8を押しながら以下のキーを押すとpororiするよ。  
