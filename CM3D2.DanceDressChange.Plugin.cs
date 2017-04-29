@@ -11,7 +11,7 @@ using UnityInjector.Attributes;
 namespace DanceDressChange.Plugin
 {
     [PluginFilter("CM3D2x64"), PluginFilter("CM3D2x86"), PluginFilter("CM3D2VRx64"), PluginFilter("CM3D2OHx64"), PluginFilter("CM3D2OHx86"), PluginFilter("CM3D2OHVRx64"),
-     PluginName("DanceDressChange"), PluginVersion("0.0.0.7")]
+     PluginName("DanceDressChange"), PluginVersion("0.0.0.8")]
 
     public class DanceDressChange : PluginBase
     {
@@ -53,7 +53,8 @@ namespace DanceDressChange.Plugin
             
             SceneDance_SSE = 34,
             SceneDance_SSEDX = 35,
-            SceneDance_KHG = 36
+            SceneDance_KHG = 36,
+            SceneDance_SUM = 37
         }
 
         private string[] tagElements = 
