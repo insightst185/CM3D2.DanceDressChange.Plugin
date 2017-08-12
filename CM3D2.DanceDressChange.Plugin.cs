@@ -74,7 +74,7 @@ namespace DanceDressChange.Plugin
         };
 
         // presetリスト 4人分でいいか ダンス用だからね
-        private const int MAX_LISTED_MAID = 4;
+        private const int MAX_LISTED_MAID = 5;
         private int[] presetPos = new int[MAX_LISTED_MAID];
 
         private void SetPreset(Maid maid, string fileName)
@@ -184,7 +184,7 @@ namespace DanceDressChange.Plugin
                         i++;
                     }
                     
-                    if(Input.GetKey(xmlManager.GetInitKey())){
+                    if(Input.GetKeyDown(xmlManager.GetInitKey())){
                         xmlManager = new XmlManager(tagElements, tagItemChanges);
                         Initialization();
                     }
